@@ -8,7 +8,8 @@ from robotpy_ext.common_drivers import navx
 class MyRobot(magicbot.MagicRobot):
 
     WHEEL_DIAMETER = .5
-    ENCODER_COUNTS_PER_REV = 1000
+    ENCODER_COUNTS_PER_L_REV = 1440
+    ENCODER_COUNTS_PER_R_REV = 881
 
     def createObjects(self):
         self.init_drive_train()
@@ -52,17 +53,27 @@ class MyRobot(magicbot.MagicRobot):
         ax = "{:10.4f}".format(self.gyro.getWorldLinearAccelX())
 
 
-        print("enc right: ", evr," enc left: ", evl, " vy: ", vy, " ay: ", ay, " vx: ", vx, "ax: ", ax)
+        #print("enc right: ", evr," enc left: ", evl, " vy: ", vy, " ay: ", ay, " vx: ", vx, "ax: ", ax)
+
+        left = "{:10.4f}".format(self.fl_motor.getQuadraturePosition())
+        right = "{:10.4f}".format(self.br_motor.getQuadraturePosition())
+
+
+        print('left:', left, 'right:', right)
+
         self.robot_drive.arcadeDrive(self.joystick.getX(), self.joystick.getY())
 
 
     def get_left_distance(self):
-        return self.fl_motor.getQuadraturePosition() * (math.pi * self.WHEEL_DIAMETER) / self.ENCODER_COUNTS_PER_REV
 
+        cir= .5 * math.pi
+        left = self.fl_motor.getQuadraturePosition()
+        left_distens= (left / self.ENCODER_COUNTS_PER_L_REV) * cir
+        return left_distens
     def get_right_distance(self):
-        return -self.br_motor.getQuadraturePosition() * (math.pi * self.WHEEL_DIAMETER) / self.ENCODER_COUNTS_PER_REV
-
-
-
+        cir = .5 * math.pi
+        right=self.br_motor.setQuadraturePosition()
+        right_distens= (right / self.ENCODER_COUNTS_PER_R_REV) * cir
+        return right_distens
 if __name__ == '__main__':
     wpilib.run(MyRobot)
