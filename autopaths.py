@@ -13,3 +13,17 @@ def get_trajectory(points, period=.02, max_velocity=5, max_acceleration=6, max_j
     left = modifier.getLeftTrajectory()
     right = modifier.getRightTrajectory()
     return left, modifier.source, right
+
+
+def get_followers(left, encoder, encoder_counts_per_rev, wheel_diameter, max_velocity):
+
+    Follower = pf.followers.EncoderFollower(left)
+    Follower.configureEncoder(encoder.get(), encoder_counts_per_rev, wheel_diameter)
+    Follower.configurePIDVA(1.0, 0.0, 0.0, 1 / max_velocity, 0)
+
+    Follower = Follower
+
+    return Follower
+
+
+
