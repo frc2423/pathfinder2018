@@ -89,6 +89,10 @@ class MyRobot(wpilib.TimedRobot):
         l = self.leftFollower.calculate(self.l_encoder.get())
         r = self.rightFollower.calculate(self.r_encoder.get())
 
+
+        print('l:', l)
+        print('r:', r)
+
         gyro_heading = -self.gyro.getAngle()    # Assuming the gyro is giving a value in degrees
         desired_heading = pf.r2d(self.leftFollower.getHeading())   # Should also be in degrees
 
